@@ -212,9 +212,11 @@
         function loadJsonFile(url) {
             return $.getJSON(url)
                 .then(data => {
+                    console.log("Se cargó exitosamente el archivo " + url + ".")
                     return { success: true, data: data, url: url };
                 })
                 .catch((jqxhr, textStatus, error) => {
+                    console.log("Falló la carga del archivo " + url + ".")
                     return { success: false, error: error, url: url };
                 });
         }
@@ -253,8 +255,8 @@
 
         // Ejemplo de uso con tu estructura
         let archivos_json = [
-            {"archivo_principal": "files/json/menu1.json", "archivo_backup": "files/json/menu.json"},
-            {"archivo_principal": "files/json/pie2.json", "archivo_backup": "files/json/pie.json"}
+            {"archivo_principal": "files/json/menu.json", "archivo_backup": "files/json/menu.json"},
+            {"archivo_principal": "files/json/pie.json", "archivo_backup": "files/json/pie.json"}
         ];
 
         loadJsonFiles(archivos_json);
