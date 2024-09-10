@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="files/styles.css">
+    <title>Sistema de Transporte de Energía Eléctrica en Alta Tensión - Total de Penalizaciones a formular</title>
+    <script></script>
+</head>
+<body>
+    <!-- Botón para mostrar/ocultar el menú -->
+    <div id="menu-btn">☰<span> Menú</span> </div>
+
+    <!-- Menú lateral -->
+    <div id="sidebar" class="active">
+        <ul>
+            <li>Inicio</li>
+            <li>Perfil</li>
+            <li>Configuración</li>
+            <li>Salir</li>
+        </ul>
+    </div>
+
+    <!-- Contenido principal -->
+    <div id="content">
+        <!-- Cabecera del chat -->
+        <div id="cabecera">
+            Transporte
+        </div>
+
+        <!-- Ventana del chat -->
+        <div id="principal">
+            <!--div class="message user">
+                <p>Hola, ¿cómo estás?</p>
+            </div>
+            <div class="message">
+                <p>¡Hola! Estoy bien, ¿y tú?</p>
+            </div-->
+            <div class="login-box">
+                <img src="files/img/enre.jpg" alt="Logo del Ente Nacional Regulador de la Electricidad" class="logo">
+                <form id="login-form">
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+    
+            
+        </div>
+
+
+        <!-- Pie de página con input de chat -->
+        <div id="pie">
+            <!--input type="text" id="chat-input" placeholder="Escribe un mensaje..."-->
+            <!--button id="send-btn">Enviar</button-->
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Función para mostrar/ocultar el menú lateral con jQuery
+        $('#menu-btn').on('click', function () {
+            $('#sidebar').toggleClass('active');
+            $('#content').toggleClass('active');
+            $('#pie').toggleClass('active');
+            $('#menu-btn').toggleClass('active');
+            $('#menu-btn span').toggleClass('active');
+            
+        });
+
+        /*
+        $.getScript("files/js_menu.js")
+        .done(function() {
+            console.log("files/js_menu.js cargado");
+            return $.getScript("files/js_pie.js");
+        }).done(function() {
+            console.log("files/js_pie.js cargado");
+            funcionDependiente();
+        })
+        .fail(function(jqxhr, settings, exception) {
+            if (settings.url === "files/js_menu.js") {
+                console.error("Error al cargar files/js_menu.js:", exception);
+            } else if (settings.url === "files/js_pie.js") {
+                console.error("Error al cargar files/js_pie.js:", exception);
+            } else {
+                console.error("Error desconocido:", exception);
+            }
+        });*/
+
+
+        /*
+        json_menu={};
+        json_pie={};
+
+        $.getJSON("files/json/menu.json")
+        .done(function(data) {
+            console.log("menu.json cargado:", data);
+            json_menu=data;
+            return $.getJSON("files/json/pie.json");
+        })
+        .done(function(data1) {
+            console.log("pie.json cargado:", data1);
+            json_pie=data1;
+            funcionDependiente();
+        })
+        .fail(function(jqxhr, textStatus, error) {
+            if (jqxhr.responseURL.includes("menu.json")) {
+                console.error("Error al cargar menu.json:", error);
+            } else if (jqxhr.responseURL.includes("pie.json")) {
+                console.error("Error al cargar pie.json:", error);
+            } else {
+                console.error("Error desconocido:", error);
+            }
+        });
+        */
+
+        /*
+        function loadJsonFile(url) {
+            return $.getJSON(url)
+                .then(data => {
+                    return { success: true, data: data, url: url };
+                })
+                .fail((jqxhr, textStatus, error) => {
+                    return { success: false, error: error, url: url };
+                });
+        }
+
+        $.when(
+            loadJsonFile("files/json/menu.json"),
+            loadJsonFile("files/json/pie.json")
+        ).then(function(result1, result2) {
+            // Verificar si alguno falló
+            if (!result1.success) {
+                console.error("Error al cargar " + result1.url + ":", result1.error);
+            } else {
+                console.log(result1.url + " cargado:", result1.data);
+            }
+
+            if (!result2.success) {
+                console.error("Error al cargar " + result2.url + ":", result2.error);
+            } else {
+                console.log(result2.url + " cargado:", result2.data);
+            }
+            
+            // Solo ejecutar funcionDependiente si ambos archivos se cargaron correctamente
+            if (result1.success && result2.success) {
+                funcionDependiente(result1, result2);
+            } else {
+                console.error("No se pudieron cargar todos los archivos necesarios.");
+            }
+        })
+
+        */
+
+
+        /*
+       
+
+        function loadJsonFile(url) {
+            return $.getJSON(url)
+                .then(data => {
+                    return { success: true, data: data, url: url };
+                })
+                .catch((jqxhr, textStatus, error) => {
+                    return { success: false, error: error, url: url };
+                });
+        }
+
+        // Cargar los archivos JSON
+        $.when(
+            loadJsonFile("files/json/menu.json"),
+            loadJsonFile("files/json/menu2.json")
+        ).then(function(result1, result2) {
+            // Si ambos archivos se cargaron correctamente
+            if (result1.success && result2.success) {
+                console.log(result1.url + " cargado:", result1.data);
+                console.log(result2.url + " cargado:", result2.data);
+                funcionDependiente(result1.data, result2.data);
+            } else {
+                console.log("Una o más peticiones fallaron. Intentando cargar archivo de respaldo...");
+
+                // Si algún archivo falla, cargar archivo de respaldo
+                loadJsonFile("files/json/pie.json").then(function(backupResult) {
+                    if (backupResult.success) {
+                        console.log("Archivo de respaldo cargado:", backupResult.data);
+
+                        // Usar el archivo de respaldo en lugar del que falló
+                        if (!result1.success) {
+                            result1.data = backupResult.data;
+                        }
+                        if (!result2.success) {
+                            result2.data = backupResult.data;
+                        }
+
+                        // Ejecutar la función dependiente con los datos corregidos
+                        funcionDependiente(result1.data, result2.data);
+                    } else {
+                        console.error("Error al cargar el archivo de respaldo:", backupResult.error);
+                        // Manejar el caso en que el archivo de respaldo también falle
+                    }
+                });
+            }
+        }).fail(function() {
+            console.error("Error en la carga de uno o más archivos JSON.");
+        });
+
+
+        */
+
+
+        function loadJsonFile(url) {
+            return $.getJSON(url)
+                .then(data => {
+                    return { success: true, data: data, url: url };
+                })
+                .catch((jqxhr, textStatus, error) => {
+                    return { success: false, error: error, url: url };
+                });
+        }
+
+        function loadJsonFiles(archivos_json) {
+            // Crear un array de promesas para manejar la carga de cada archivo
+            let promises = archivos_json.map(file => {
+                return loadJsonFile(file.archivo_principal)
+                    .then(result => {
+                        if (!result.success) {
+                            console.log("Fallo la carga de " + file.archivo_principal + ", cargando " + file.archivo_backup);
+                            return loadJsonFile(file.archivo_backup);
+                        }
+                        return result;  // Retornar el resultado si la carga fue exitosa
+                    });
+            });
+
+            // Usar $.when para esperar a que todas las promesas se completen
+            $.when.apply($, promises).then(function(...results) {
+                // Los resultados de todas las promesas se devuelven como un array
+                let allResults = results.map(result => {
+                    return result.success ? result.data : null;
+                });
+
+                // Verificar si todas las cargas fueron exitosas
+                if (allResults.every(data => data !== null)) {
+                    console.log("Todos los archivos se cargaron correctamente.");
+                    funcionDependiente(...allResults);
+                } else {
+                    console.error("Error en la carga de algunos archivos.");
+                }
+            }).fail(function() {
+                console.error("Error general en la carga de archivos.");
+            });
+        }
+
+        // Ejemplo de uso con tu estructura
+        let archivos_json = [
+            {"archivo_principal": "files/json/menu1.json", "archivo_backup": "files/json/menu.json"},
+            {"archivo_principal": "files/json/pie2.json", "archivo_backup": "files/json/pie.json"}
+        ];
+
+        loadJsonFiles(archivos_json);
+
+        function funcionDependiente(data1, data2){
+            console.log(data1);
+            console.log(data2);
+            
+            $('#sidebar').html('<ul></ul>');
+            data1.items.map(item => $('#sidebar ul').crearItemMenu(item.show));
+
+            $('#pie').html('');
+            data2.items.map(item => $('#pie').crearTarjetaPie(item.show));
+        }
+
+        $.fn.extend({
+            crearTarjetaPie: function(texto) {
+                return this.append('<div>' + texto + '</div>');
+            },
+            crearItemMenu: function(texto) {
+                return this.append('<li>' + texto + '</li>');
+            }
+        });
+
+        // Usar el método personalizado
+        
+
+
+
+
+
+
+
+        $(document).ready(function() {
+            $('#login-form').on('submit', function(event) {
+                event.preventDefault();
+                
+                // Obtener los valores del formulario
+                var username = $('#username').val();
+                var password = $('#password').val();
+                
+                console.log("username: ", username, " - password: ", password)
+                // Realizar la solicitud POST
+                $.ajax({
+                    url: 'http://172.30.10.102:8080/Login', // Reemplaza con la URL de tu API
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        campoUsuario: username,
+                        campoClave: password
+                    }),
+                    success: function(response) {
+                        // Manejar la respuesta exitosa
+                        console.log('Éxito:', response);
+                        alert('Inicio de sesión exitoso');
+                        // Redirigir a otra página, mostrar un mensaje, etc.
+                    },
+                    error: function(xhr, status, error) {
+                        // Manejar errores
+                        console.error('Error:', status, error);
+                        alert('Error al iniciar sesión');
+                    }
+                });
+            });
+        });
+                
+
+
+
+
+    </script>
+</body>
+</html>
