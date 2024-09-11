@@ -59,6 +59,31 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        resaltado = 'font-weight: bold; text-decoration: underline;'
+        function print(str){
+            str=str.trimRight();
+            str=(str.substr(-1)=='*')?str.substr(0,str.length-1):str;
+            let cant=parseInt((str.length-str.replaceAll('*','').length+1)/2);
+            //console.log('cant=',cant, ' str=',str , ' strX=',str.replaceAll('*','%c') );
+            if(cant == 1){
+                console.log(str.replaceAll('*','%c'),resaltado,'');    
+            }else if(cant == 2){
+                console.log(str.replaceAll('*','%c'),resaltado,'',resaltado,'');    
+            }else if(cant == 3){
+                console.log(str.replaceAll('*','%c'),resaltado,'',resaltado,'',resaltado,'');    
+            }else if(cant == 4){
+                console.log(str.replaceAll('*','%c'),resaltado,'',resaltado,'',resaltado,'',resaltado,'');    
+            }else if(cant == 5){
+                console.log(str.replaceAll('*','%c'),resaltado,'',resaltado,'',resaltado,'',resaltado,'',resaltado,'');    
+            }else if(cant == 6){
+                console.log(str.replaceAll('*','%c'),resaltado,'',resaltado,'',resaltado,'',resaltado,'',resaltado,'',resaltado,'');    
+            }else if(cant == 7){
+                console.log(str.replaceAll('*','%c'),resaltado,'',resaltado,'',resaltado,'',resaltado,'',resaltado,'',resaltado,'',resaltado,'');    
+            }else{
+                console.log(str);
+            }
+        }
+
         // Función para mostrar/ocultar el menú lateral con jQuery
         $('#menu-btn').on('click', function () {
             $('#sidebar').toggleClass('active');
@@ -212,27 +237,43 @@
         function loadJsonFile(url) {
             return $.getJSON(url)
                 .then(data => {
-                    console.log("Se cargó exitosamente el archivo " + url + ".")
+                    //console.log("Se cargó exitosamente el archivo %c" + url + ".",resaltado)
+                    print(`Se cargó exitosamente el archivo *${url}*.`);
                     return { success: true, data: data, url: url };
                 })
                 .catch((jqxhr, textStatus, error) => {
-                    console.log("Falló la carga del archivo " + url + ".")
+                    //console.log("Falló la carga del archivo %c" + url + ".", resaltado)
+                    print(`Falló la carga del archivo *${url}*.`);
                     return { success: false, error: error, url: url };
                 });
         }
 
-        function loadJsonFiles(archivos_json) {
+        function loadJsonFiles(archivos_json,callback) {
             // Crear un array de promesas para manejar la carga de cada archivo
-            let promises = archivos_json.map(file => {
-                return loadJsonFile(file.archivo_principal)
-                    .then(result => {
-                        if (!result.success) {
-                            console.log("Fallo la carga de " + file.archivo_principal + ", cargando " + file.archivo_backup);
-                            return loadJsonFile(file.archivo_backup);
-                        }
-                        return result;  // Retornar el resultado si la carga fue exitosa
-                    });
-            });
+            let promises = archivos_json.map(file => 
+                {
+                    if (typeof(file.archivo_principal)=='undefined'){
+                        print(`Se genera la Promesa de *${JSON.stringify(file)}*`)
+                        return new Promise((resolve, reject) => {
+                            if (true) {
+                                resolve({success: true, data: file, url: null}); // Si la operación es exitosa, se llama a resolve
+                            } else {
+                                reject('Ocurrió un error en la promesa.');
+                            }
+                        })
+                    }else{
+                        return loadJsonFile(file.archivo_principal)
+                        .then(result => {
+                            if (!result.success) {
+                                //console.log("Intentando la carga de %c" + file.archivo_backup + "%c, por falla en la carga de %c"+file.archivo_principal+"%c",resaltado,'',resaltado);
+                                print("Intentando la carga de *" + file.archivo_backup + "*, por falla en la carga de *"+file.archivo_principal+"*")
+                                return loadJsonFile(file.archivo_backup);
+                            }
+                            return result;  // Retornar el resultado si la carga fue exitosa
+                        });
+                    }
+                }
+            );
 
             // Usar $.when para esperar a que todas las promesas se completen
             $.when.apply($, promises).then(function(...results) {
@@ -243,27 +284,30 @@
 
                 // Verificar si todas las cargas fueron exitosas
                 if (allResults.every(data => data !== null)) {
-                    console.log("Todos los archivos se cargaron correctamente.");
-                    funcionDependiente(...allResults);
+                    print("Todos los archivos se cargaron correctamente.");
+                    //console.log("Todos los archivos se cargaron correctamente.");
+                    callback(...allResults);
                 } else {
-                    console.error("Error en la carga de algunos archivos.");
+                    print("Error en la carga de algunos archivos.");
+                    //console.error("Error en la carga de algunos archivos.");
                 }
             }).fail(function() {
+                print("Error general en la carga de archivos.");
                 console.error("Error general en la carga de archivos.");
             });
         }
 
         // Ejemplo de uso con tu estructura
         let archivos_json = [
-            {"archivo_principal": "files/json/menu.json", "archivo_backup": "files/json/menu.json"},
-            {"archivo_principal": "files/json/pie.json", "archivo_backup": "files/json/pie.json"}
+            {"archivo_principal": "files/json/menu.json", "archivo_backup": "files/json/menu5.json"},
+            {"archivo_principal": "files/json/pie.json", "archivo_backup": "files/json/pie5.json"}
         ];
 
-        loadJsonFiles(archivos_json);
+        loadJsonFiles(archivos_json,funcionDependiente);
 
         function funcionDependiente(data1, data2){
-            console.log(data1);
-            console.log(data2);
+            //console.log(data1);
+            //console.log(data2);
             
             $('#sidebar').html('<ul></ul>');
             data1.items.map(item => $('#sidebar ul').crearItemMenu(item.show));
@@ -271,7 +315,36 @@
             $('#pie').html('');
             data2.items.map(item => $('#pie').crearTarjetaPie(item.show));
         }
-
+/*
+        loadJsonFiles(
+            [
+                {
+                    "items":
+                        [
+                            {"name":"inicio", "show":"Groso", "tiopoaccion":"redirigir","accion":"login"}
+                            ,{"name":"resoluciones", "show":"Resoluciones", "tiopoaccion":"redirigir","accion":"resoluciones"}
+                            ,{"name":"empresa", "show":"Empresa", "tiopoaccion":"redirigir","accion":"empresa"}
+                        ]
+                }
+                ,{
+                    "archivo_principal": "files/json/pie4.json"
+                    ,"archivo_backup": "files/json/pie.json"
+                }
+            ]
+            ,function(data1,data2){
+                $('#sidebar').html('<ul></ul>');
+                data1.items.map(
+                    item => 
+                        $('#sidebar ul').crearItemMenu(item.show)
+                );
+                $('#pie').html('');
+                data2.items.map(
+                    item => 
+                        $('#pie').crearTarjetaPie(item.show)
+                );
+            }
+        )        
+*/
         $.fn.extend({
             crearTarjetaPie: function(texto) {
                 return this.append('<div>' + texto + '</div>');
@@ -298,7 +371,8 @@
                 var username = $('#username').val();
                 var password = $('#password').val();
                 
-                console.log("username: ", username, " - password: ", password)
+                print(`username: ${username} - password: ${password}.`)
+                //console.log("username: ", username, " - password: ", password)
                 // Realizar la solicitud POST
                 $.ajax({
                     url: 'http://172.30.10.102:8080/Login', // Reemplaza con la URL de tu API
@@ -311,7 +385,13 @@
                     success: function(response) {
                         // Manejar la respuesta exitosa
                         console.log('Éxito:', response);
-                        alert('Inicio de sesión exitoso');
+                        if(response.estado_app == 1){
+                            alert('Inicio de sesión exitoso');
+                        }else{
+                            alert('Login incorrecto');
+                        }
+                        
+
                         // Redirigir a otra página, mostrar un mensaje, etc.
                     },
                     error: function(xhr, status, error) {

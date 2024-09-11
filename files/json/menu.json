@@ -1,7 +1,7 @@
 {
     "items":[
-        {"name":"inicio", "show":"Inicio", "tiopoaccion":"redirigir","accion":"login"},
-        {"name":"resoluciones", "show":"Resoluciones", "tiopoaccion":"redirigir","accion":"resoluciones"},
-        {"name":"empresa", "show":"Empresa", "tiopoaccion":"redirigir","accion":"empresa"}
+        {"name":"inicio", "show":"Inicio", "tiopoaccion":"redirigir","accion":"login"}
+        ,{"name":"resoluciones", "show":"Resoluciones", "tiopoaccion":"redirigir","accion":"resoluciones"}
+        ,{"name":"empresa", "show":"Empresa", "tiopoaccion":"redirigir","accion":"empresa"}
     ]
 }
