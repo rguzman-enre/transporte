@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="files/styles.css">
     <title>Sistema de Transporte de Energía Eléctrica en Alta Tensión - Total de Penalizaciones a formular</title>
-    <script></script>
+    
+    <!--Content Security Policy (CSP): Implementa un CSP estricto que bloquee la ejecución de scripts no autorizados, lo cual reduce las posibilidades de inyección de JavaScript malicioso.-->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-rguzman'; connect-src 'self' http://172.30.10.102:8080;">
+
 </head>
 <body>
     <!-- Botón para mostrar/ocultar el menú -->
@@ -57,8 +60,8 @@
     </div>
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" nonce="rguzman"></script>
+    <script nonce="rguzman">
         resaltado = 'font-weight: bold; text-decoration: underline;'
         function print(str){
             str=str.trimRight();
@@ -114,124 +117,6 @@
         });*/
 
 
-        /*
-        json_menu={};
-        json_pie={};
-
-        $.getJSON("files/json/menu.json")
-        .done(function(data) {
-            console.log("menu.json cargado:", data);
-            json_menu=data;
-            return $.getJSON("files/json/pie.json");
-        })
-        .done(function(data1) {
-            console.log("pie.json cargado:", data1);
-            json_pie=data1;
-            funcionDependiente();
-        })
-        .fail(function(jqxhr, textStatus, error) {
-            if (jqxhr.responseURL.includes("menu.json")) {
-                console.error("Error al cargar menu.json:", error);
-            } else if (jqxhr.responseURL.includes("pie.json")) {
-                console.error("Error al cargar pie.json:", error);
-            } else {
-                console.error("Error desconocido:", error);
-            }
-        });
-        */
-
-        /*
-        function loadJsonFile(url) {
-            return $.getJSON(url)
-                .then(data => {
-                    return { success: true, data: data, url: url };
-                })
-                .fail((jqxhr, textStatus, error) => {
-                    return { success: false, error: error, url: url };
-                });
-        }
-
-        $.when(
-            loadJsonFile("files/json/menu.json"),
-            loadJsonFile("files/json/pie.json")
-        ).then(function(result1, result2) {
-            // Verificar si alguno falló
-            if (!result1.success) {
-                console.error("Error al cargar " + result1.url + ":", result1.error);
-            } else {
-                console.log(result1.url + " cargado:", result1.data);
-            }
-
-            if (!result2.success) {
-                console.error("Error al cargar " + result2.url + ":", result2.error);
-            } else {
-                console.log(result2.url + " cargado:", result2.data);
-            }
-            
-            // Solo ejecutar funcionDependiente si ambos archivos se cargaron correctamente
-            if (result1.success && result2.success) {
-                funcionDependiente(result1, result2);
-            } else {
-                console.error("No se pudieron cargar todos los archivos necesarios.");
-            }
-        })
-
-        */
-
-
-        /*
-       
-
-        function loadJsonFile(url) {
-            return $.getJSON(url)
-                .then(data => {
-                    return { success: true, data: data, url: url };
-                })
-                .catch((jqxhr, textStatus, error) => {
-                    return { success: false, error: error, url: url };
-                });
-        }
-
-        // Cargar los archivos JSON
-        $.when(
-            loadJsonFile("files/json/menu.json"),
-            loadJsonFile("files/json/menu2.json")
-        ).then(function(result1, result2) {
-            // Si ambos archivos se cargaron correctamente
-            if (result1.success && result2.success) {
-                console.log(result1.url + " cargado:", result1.data);
-                console.log(result2.url + " cargado:", result2.data);
-                funcionDependiente(result1.data, result2.data);
-            } else {
-                console.log("Una o más peticiones fallaron. Intentando cargar archivo de respaldo...");
-
-                // Si algún archivo falla, cargar archivo de respaldo
-                loadJsonFile("files/json/pie.json").then(function(backupResult) {
-                    if (backupResult.success) {
-                        console.log("Archivo de respaldo cargado:", backupResult.data);
-
-                        // Usar el archivo de respaldo en lugar del que falló
-                        if (!result1.success) {
-                            result1.data = backupResult.data;
-                        }
-                        if (!result2.success) {
-                            result2.data = backupResult.data;
-                        }
-
-                        // Ejecutar la función dependiente con los datos corregidos
-                        funcionDependiente(result1.data, result2.data);
-                    } else {
-                        console.error("Error al cargar el archivo de respaldo:", backupResult.error);
-                        // Manejar el caso en que el archivo de respaldo también falle
-                    }
-                });
-            }
-        }).fail(function() {
-            console.error("Error en la carga de uno o más archivos JSON.");
-        });
-
-
-        */
 
 
         function loadJsonFile(url) {
@@ -357,11 +242,60 @@
         // Usar el método personalizado
         
 
+/*
+x = [...new Set(performance.timing.navigationStart.toString().split('').reverse())];
+console.log(x);
+// a.map(a=>a.split(x[2]))
+str = "eyJh1bG2ciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNTk4MDgxOCwianRpIjoiMzc5Mzk5NDgtNGMzOC00MmM0LWEzMjUtYmMzZGNmYTEyZWE0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InJndXptYW5AZW5yZS5nb3YuYXIiLCJuYmYiOjE3MjU5ODA4MTgsImNzcmYiOiI5OGY3Yzg3NS04Y2MzLTRlMjctOGNmNy02YjM5NDk5MjEyM2YiLCJleHAiOjE3MjU5ODQ0MTh9.ay19MU8lhDUloMUgLY-j2Kh";
+vec=str
+    .split('.')
+    .map(a=>a.split(x[0]))
+    .map(a=>a.map(a=>a.split(x[1])))
+    .map(a=>a.map(a=>a.map(a=>a.split(x[2]))))
+    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[3])))))
+    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[4]))))))
+    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[5])))))))
+    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[6]))))))))
+    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[7])))))))))
+    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[8]))))))))))
+    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[9])))))))))));
+console.log(vec);
+x=['.',...x];
+function recursivo(v,i){
+    
+    if(typeof(v[0])=='object' && typeof(x[i+1])!='undefined'){
+        return v.map(b=>recursivo(b,i+1)).join(x[i]);
+    }
+    else{
+        //console.log('------>',v,i)
+        return v.join(x[i]);
+    }
+}
+result=recursivo(vec,0);
+console.log('str = ',str);
+console.log('result = ',result);
+console.log(result==str);
+*/
 
 
-
-
-
+        function saveJWT(jwt){
+            x = [...new Set(performance.timing.navigationStart.toString().split('').reverse())];
+            sessionStorage.setItem('vectorDeVectores', JSON.stringify(
+                jwt
+                .split('.')
+                .map(a=>a.split(x[0]))
+                .map(a=>a.map(a=>a.split(x[1])))
+                .map(a=>a.map(a=>a.map(a=>a.split(x[2]))))
+                .map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[3])))))
+                .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[4]))))))
+                .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[5])))))))
+                .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[6]))))))))
+                .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[7])))))))))
+                .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[8]))))))))))
+                .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[9])))))))))))
+            ));
+            print(`Se guardó el *JWT*.`);
+        }
 
         $(document).ready(function() {
             $('#login-form').on('submit', function(event) {
@@ -386,7 +320,8 @@
                         // Manejar la respuesta exitosa
                         console.log('Éxito:', response);
                         if(response.estado_app == 1){
-                            alert('Inicio de sesión exitoso');
+                            print('Inicio de sesión *exitoso*');
+                            saveJWT(response.data);
                         }else{
                             alert('Login incorrecto');
                         }
