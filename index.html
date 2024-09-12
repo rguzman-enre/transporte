@@ -7,7 +7,7 @@
     <title>Sistema de Transporte de Energía Eléctrica en Alta Tensión - Total de Penalizaciones a formular</title>
     
     <!--Content Security Policy (CSP): Implementa un CSP estricto que bloquee la ejecución de scripts no autorizados, lo cual reduce las posibilidades de inyección de JavaScript malicioso.-->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-rguzman'; connect-src 'self' http://172.30.10.102:8080;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' http://172.30.10.102:8080 'nonce-rguzman'; connect-src 'self' http://172.30.10.102:8080;">
 
 </head>
 <body>
@@ -311,11 +311,11 @@ console.log(result==str);
                 $.ajax({
                     url: 'http://172.30.10.102:8080/Login', // Reemplaza con la URL de tu API
                     type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
                         campoUsuario: username,
                         campoClave: password
-                    }),
+                    },
                     success: function(response) {
                         // Manejar la respuesta exitosa
                         console.log('Éxito:', response);
