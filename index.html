@@ -86,6 +86,21 @@
                 console.log(str);
             }
         }
+        
+        function getJWT(){
+            x=['.',...[...new Set(performance.timing.navigationStart.toString().split('').reverse())]];
+            vec = JSON.parse(localStorage.getItem('vdv'));
+            function recursivo(v,i){
+                if(typeof(v[0])=='object' && typeof(x[i+1])!='undefined'){
+                    return v.map(b=>recursivo(b,i+1)).join(x[i]);
+                }
+                else{
+                    return v.join(x[i]);
+                }
+            }
+            result=recursivo(vec,0);
+            console.log('result = ',result);
+        }
 
         // Función para mostrar/ocultar el menú lateral con jQuery
         $('#menu-btn').on('click', function () {
@@ -242,45 +257,11 @@
         // Usar el método personalizado
         
 
-/*
-x = [...new Set(performance.timing.navigationStart.toString().split('').reverse())];
-console.log(x);
-// a.map(a=>a.split(x[2]))
-str = "eyJh1bG2ciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNTk4MDgxOCwianRpIjoiMzc5Mzk5NDgtNGMzOC00MmM0LWEzMjUtYmMzZGNmYTEyZWE0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InJndXptYW5AZW5yZS5nb3YuYXIiLCJuYmYiOjE3MjU5ODA4MTgsImNzcmYiOiI5OGY3Yzg3NS04Y2MzLTRlMjctOGNmNy02YjM5NDk5MjEyM2YiLCJleHAiOjE3MjU5ODQ0MTh9.ay19MU8lhDUloMUgLY-j2Kh";
-vec=str
-    .split('.')
-    .map(a=>a.split(x[0]))
-    .map(a=>a.map(a=>a.split(x[1])))
-    .map(a=>a.map(a=>a.map(a=>a.split(x[2]))))
-    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[3])))))
-    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[4]))))))
-    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[5])))))))
-    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[6]))))))))
-    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[7])))))))))
-    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[8]))))))))))
-    .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[9])))))))))));
-console.log(vec);
-x=['.',...x];
-function recursivo(v,i){
-    
-    if(typeof(v[0])=='object' && typeof(x[i+1])!='undefined'){
-        return v.map(b=>recursivo(b,i+1)).join(x[i]);
-    }
-    else{
-        //console.log('------>',v,i)
-        return v.join(x[i]);
-    }
-}
-result=recursivo(vec,0);
-console.log('str = ',str);
-console.log('result = ',result);
-console.log(result==str);
-*/
 
 
         function saveJWT(jwt){
             x = [...new Set(performance.timing.navigationStart.toString().split('').reverse())];
-            sessionStorage.setItem('vectorDeVectores', JSON.stringify(
+            localStorage.setItem('vdv', JSON.stringify(
                 jwt
                 .split('.')
                 .map(a=>a.split(x[0]))
@@ -294,7 +275,7 @@ console.log(result==str);
                 .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[8]))))))))))
                 .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[9])))))))))))
             ));
-            print(`Se guardó el *JWT*.`);
+            print(`Se guardó el *JWT* e *vdv*.`);
         }
 
         $(document).ready(function() {
