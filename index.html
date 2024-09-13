@@ -86,21 +86,6 @@
                 console.log(str);
             }
         }
-        
-        function getJWT(){
-            x=['.',...[...new Set(performance.timing.navigationStart.toString().split('').reverse())]];
-            vec = JSON.parse(localStorage.getItem('vdv'));
-            function recursivo(v,i){
-                if(typeof(v[0])=='object' && typeof(x[i+1])!='undefined'){
-                    return v.map(b=>recursivo(b,i+1)).join(x[i]);
-                }
-                else{
-                    return v.join(x[i]);
-                }
-            }
-            result=recursivo(vec,0);
-            console.log('result = ',result);
-        }
 
         // Función para mostrar/ocultar el menú lateral con jQuery
         $('#menu-btn').on('click', function () {
@@ -258,10 +243,9 @@
         
 
 
-
         function saveJWT(jwt){
             x = [...new Set(performance.timing.navigationStart.toString().split('').reverse())];
-            localStorage.setItem('vdv', JSON.stringify(
+            sessionStorage.setItem('vdv', JSON.stringify(
                 jwt
                 .split('.')
                 .map(a=>a.split(x[0]))
@@ -275,7 +259,9 @@
                 .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[8]))))))))))
                 .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[9])))))))))))
             ));
-            print(`Se guardó el *JWT* e *vdv*.`);
+            print(`Se guardó el *JWT*.`);
+            print(`Todo marcha bien!`);
+            
         }
 
         $(document).ready(function() {
