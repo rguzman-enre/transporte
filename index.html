@@ -7,7 +7,7 @@
     <title>Sistema de Transporte de Energía Eléctrica en Alta Tensión - Total de Penalizaciones a formular</title>
     
     <!--Content Security Policy (CSP): Implementa un CSP estricto que bloquee la ejecución de scripts no autorizados, lo cual reduce las posibilidades de inyección de JavaScript malicioso.-->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' http://172.30.10.102:8080 'nonce-rguzman'; connect-src 'self' http://172.30.10.102:8080;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' http://172.30.10.102:8080 'nonce-rguzman'; connect-src 'self' http://172.30.10.102:8080 http://localhost;">
 
 </head>
 <body>
@@ -17,10 +17,7 @@
     <!-- Menú lateral -->
     <div id="sidebar" class="active">
         <ul>
-            <li>Inicio</li>
-            <li>Perfil</li>
-            <li>Configuración</li>
-            <li>Salir</li>
+            <li>Login</li>
         </ul>
     </div>
 
@@ -28,7 +25,9 @@
     <div id="content">
         <!-- Cabecera del chat -->
         <div id="cabecera">
-            Transporte
+            <span>Transporte</span>
+            <div id="avatar">
+            </div>
         </div>
 
         <!-- Ventana del chat -->
@@ -62,6 +61,14 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" nonce="rguzman"></script>
     <script nonce="rguzman">
+        sessionStorage.removeItem('vdv');
+
+        srv='http://localhost/transporte_backend';
+        srv2='http://172.30.10.102:8080';
+        slashEnd='/'
+        rutas={
+            "login":srv+"/Login"+slashEnd
+        };
         resaltado = 'font-weight: bold; text-decoration: underline;'
         function print(str){
             str=str.trimRight();
@@ -85,6 +92,21 @@
             }else{
                 console.log(str);
             }
+        }
+        
+        function getJWT(){
+            x=['.',...[...new Set(performance.timing.navigationStart.toString().split('').reverse())]];
+            vec = JSON.parse(sessionStorage.getItem('vdv'));
+            function recursivo(v,i){
+                if(typeof(v[0])=='object' && typeof(x[i+1])!='undefined'){
+                    return v.map(b=>recursivo(b,i+1)).join(x[i]);
+                }
+                else{
+                    return v.join(x[i]);
+                }
+            }
+            result=recursivo(vec,0);
+            console.log('result = ',result);
         }
 
         // Función para mostrar/ocultar el menú lateral con jQuery
@@ -199,38 +221,7 @@
 
             $('#pie').html('');
             data2.items.map(item => $('#pie').crearTarjetaPie(item.show));
-        }
-/*
-        loadJsonFiles(
-            [
-                {
-                    "items":
-                        [
-                            {"name":"inicio", "show":"Groso", "tiopoaccion":"redirigir","accion":"login"}
-                            ,{"name":"resoluciones", "show":"Resoluciones", "tiopoaccion":"redirigir","accion":"resoluciones"}
-                            ,{"name":"empresa", "show":"Empresa", "tiopoaccion":"redirigir","accion":"empresa"}
-                        ]
-                }
-                ,{
-                    "archivo_principal": "files/json/pie4.json"
-                    ,"archivo_backup": "files/json/pie.json"
-                }
-            ]
-            ,function(data1,data2){
-                $('#sidebar').html('<ul></ul>');
-                data1.items.map(
-                    item => 
-                        $('#sidebar ul').crearItemMenu(item.show)
-                );
-                $('#pie').html('');
-                data2.items.map(
-                    item => 
-                        $('#pie').crearTarjetaPie(item.show)
-                );
-            }
-        )        
-*/
-        $.fn.extend({
+        }        $.fn.extend({
             crearTarjetaPie: function(texto) {
                 return this.append('<div>' + texto + '</div>');
             },
@@ -241,6 +232,7 @@
 
         // Usar el método personalizado
         
+
 
 
         function saveJWT(jwt){
@@ -259,9 +251,13 @@
                 .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[8]))))))))))
                 .map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.map(a=>a.split(x[9])))))))))))
             ));
-            print(`Se guardó el *JWT*.`);
-            print(`Todo marcha bien!`);
-            
+            print(`Se guardó el *JWT* e *vdv*.`);
+        }
+
+
+        function login(username){
+            print(`ENTRAMOS!`);
+            $('#avatar').html(`<div class='avatar'><span>${username.substr(0,2).toUpperCase()}</span></div>`)
         }
 
         $(document).ready(function() {
@@ -272,11 +268,11 @@
                 var username = $('#username').val();
                 var password = $('#password').val();
                 
-                print(`username: ${username} - password: ${password}.`)
+                print(`username: *${username}* - password: *${password}* - to: *${rutas.login}*`)
                 //console.log("username: ", username, " - password: ", password)
                 // Realizar la solicitud POST
                 $.ajax({
-                    url: 'http://172.30.10.102:8080/Login', // Reemplaza con la URL de tu API
+                    url: rutas.login,
                     type: 'POST',
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
@@ -289,11 +285,11 @@
                         if(response.estado_app == 1){
                             print('Inicio de sesión *exitoso*');
                             saveJWT(response.data);
+                            login(username);
+
                         }else{
                             alert('Login incorrecto');
                         }
-                        
-
                         // Redirigir a otra página, mostrar un mensaje, etc.
                     },
                     error: function(xhr, status, error) {

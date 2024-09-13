@@ -101,6 +101,9 @@ body {
 
 /* Estilo de la cabecera del chat */
 #cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #007bff;
     color: white;
     padding: 15px;
@@ -272,3 +275,20 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+
+
+
+.avatar{
+    width: 2rem;       
+    border-radius:100%;
+    text-align: center;
+    background-color: rgb(240 240 249);
+  }
+  .avatar span{
+    line-height: 2rem; 
+    color:#007bff;
+    font-size: small;
+    font-weight: bold;
+    
+  }
